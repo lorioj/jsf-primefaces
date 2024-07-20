@@ -9,6 +9,7 @@
         <h:head>
         </h:head>
         <h:body>
+
             <h:form>
                 <p:outputLabel value="Input Text"  />
                 <p:inputText id="txtName" value="#{user.name}"/><br/>
@@ -18,8 +19,8 @@
                 <p:spinner />
                 <p:button  value="Submit" onchange="#{user.onChange()}"/>
             </h:form>
-            
-            <!--how to crate dynamic component-->
+
+            how to crate dynamic component
             <p:outputLabel value="Dynamic Component"/>
             <h:form>
                 <p:inputText value="#{dynamicComponent.numberOfGuests}" />
@@ -33,6 +34,40 @@
                     <p:commandButton value="save" action="#{bean.save}" />
                 </h:form>
             </h:panelGroup>
+
+            <p:treeTable value="#{personView.root}" var="node">           
+                <p:column>
+                    <f:facet name="header">
+                        Name
+                    </f:facet>
+                    <h:outputText value="#{node.name}"></h:outputText>
+                </p:column>
+
+            </p:treeTable>
+
+            <h:form>
+
+
+                <p:tree value="#{checkboxTree.tree}" 
+                        var="rating" 
+                        selectionMode="checkbox"
+                        selection="#{checkboxTree.selected}"
+                        dynamic="false">
+                    <p:treeNode >
+
+                        <p:outputLabel value="#{rating}">
+
+                        </p:outputLabel>
+                    </p:treeNode>   
+                    <p:ajax event="select" listener="#{checkboxTree.onSelectedNode}"/>
+                    <p:ajax event="unselect" listener="#{checkboxTree.onUnselectedNode}"/>
+
+
+                </p:tree>
+
+            </h:form>
+
+
 
         </h:body>
     </f:view>
