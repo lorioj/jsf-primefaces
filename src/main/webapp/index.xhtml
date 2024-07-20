@@ -59,11 +59,12 @@
 
                         </p:outputLabel>
                     </p:treeNode>   
-                    <p:ajax event="select" listener="#{checkboxTree.onSelectedNode}"/>
-                    <p:ajax event="unselect" listener="#{checkboxTree.onUnselectedNode}"/>
+                    <p:ajax event="select" listener="#{checkboxTree.onSelectedNode}" update="@form:outputLabel"/>
+                    <p:ajax event="unselect" listener="#{checkboxTree.onUnselectedNode}" update="@form:outputLabel"/>
 
 
                 </p:tree>
+                <p:inputTextarea id="outputLabel" value="#{checkboxTree.textAreaValue}" />
 
             </h:form>
 

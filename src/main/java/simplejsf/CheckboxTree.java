@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.model.CheckboxTreeNode;
+import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 /**
@@ -18,78 +19,90 @@ import org.primefaces.model.TreeNode;
  */
 @ManagedBean
 public class CheckboxTree {
-    
-    
-    
+
     private TreeNode<String> tree;
-    
+
     private List<TreeNode> selected;
-    
+
+    private String textAreaValue;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         System.err.println("CheckboxTree init");
         tree = createDynamicTree();
     }
-    
-    
-    public TreeNode<String> createDynamicTree(){
+
+    public TreeNode<String> createDynamicTree() {
         TreeNode<String> root = new CheckboxTreeNode<>();
-      
-        TreeNode<String> n = new CheckboxTreeNode<>("Root",root);
+
+        TreeNode<String> n = new CheckboxTreeNode<>("Root", root);
 
         TreeNode<String> n2 = new CheckboxTreeNode<>("n", n);
-        
-        
+
         TreeNode<String> n3 = new CheckboxTreeNode<>("n2", n2);
-        
-        
+
         TreeNode<String> n4 = new CheckboxTreeNode<>("n3", n2);
         return root;
-        
+
     }
-    
-    
-    public void setTree(TreeNode<String> tree){
+
+    public void setTree(TreeNode<String> tree) {
         this.tree = tree;
     }
-    
-    public TreeNode getTree(){
+
+    public TreeNode getTree() {
         return this.tree;
     }
-    
-    
-     public void setSelected(List<TreeNode> selected){
+
+    public void setSelected(List<TreeNode> selected) {
         this.selected = selected;
     }
-    
-    public List<TreeNode>getSelected(){
+
+    public List<TreeNode> getSelected() {
         return this.selected;
     }
-    
-    
-    
-    
-    public void onSelectedNode(NodeSelectEvent event){
+
+    public void onSelectedNode(NodeSelectEvent event) {
         System.err.println("Select node...");
+
         TreeNode<String> node = event.getTreeNode();
         String d = node.getParent().getData();
         List<TreeNode<String>> children = node.getChildren();
-        
+        this.selected.add(node);
+
         //other logic
-       
     }
-    
-    public void onUnselectedNode(NodeUnselectEvent event){
+
+    public void onUnselectedNode(NodeUnselectEvent event) {
         System.err.println("Unselect node.....");
         TreeNode<String> node = event.getTreeNode();
         this.selected.remove(node);
-        
+
         //other logic
-        
-        
     }
+
+    public void setTextAreaValue(String textAreaValue) {
+        this.textAreaValue = textAreaValue;
+    }
+
+    public String getTextAreaValue() {
+        return this.textAreaValue;
+    }
+
     
-   
     
+    
+    
+    public void printP(List<TreeNode<String>> l, TreeNode<String> parent) {
+        if (l == null) {
+            return;
+        }
+
+        for (TreeNode<String> p : l) {
+            TreeNode<String> c = new DefaultTreeNode<>(p.getData(), parent);
+            printP(c.getChildren(), c);
+        }
+
+    }
+
 }
