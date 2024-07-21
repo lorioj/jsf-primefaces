@@ -48,12 +48,13 @@
             <h:form>
 
 
-                <p:tree value="#{checkboxTree.tree}" 
+                <p:tree id="tree"
+                    value="#{checkboxTree.tree}" 
                         var="rating" 
                         selectionMode="checkbox"
                         selection="#{checkboxTree.selected}"
-                        dynamic="false">
-                    <p:treeNode >
+                        >
+                    <p:treeNode>
 
                         <p:outputLabel value="#{rating}">
 
@@ -62,9 +63,21 @@
                     <p:ajax event="select" listener="#{checkboxTree.onSelectedNode}" update="@form:outputLabel"/>
                     <p:ajax event="unselect" listener="#{checkboxTree.onUnselectedNode}" update="@form:outputLabel"/>
 
-
                 </p:tree>
-                <p:inputTextarea id="outputLabel" value="#{checkboxTree.textAreaValue}" />
+                <p:selectOneRadio id="line" value="#{checkboxTree.radioValue}" layout="lineDirection">
+                    <f:selectItem itemLabel="A" itemValue="A"/>
+                    <f:selectItem itemLabel="E" itemValue="E"/>
+                    <f:selectItem itemLabel="S" itemValue="S"/>
+                    
+                    <p:ajax event="change" listener="#{checkboxTree.onRadioChange}" update="@form:tree outputLabel"/>
+                </p:selectOneRadio>
+               
+                
+                <p:outputLabel value="output"/>
+                <p:inputTextarea id="outputLabel" value="#{checkboxTree.textAreaValue}">
+                    <p:ajax event="change" listener="#{checkboxTree.onInputChange}" update="@form:tree"/>
+                </p:inputTextarea>
+
 
             </h:form>
 
