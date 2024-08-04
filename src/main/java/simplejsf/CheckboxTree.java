@@ -76,6 +76,94 @@ public class CheckboxTree {
 
     }
 
+    
+    public Map<String, List<String>> mapArr(){
+        String[] arr = {};
+        
+        Map<String, List<String>> map = new TreeMap<>(); 
+        map.put("root", new ArrayList<>());
+        for(String s : arr){
+            map.put(s, new ArrayList<>());
+        }
+        
+        for(String s : arr){
+            if(s.length() == 1){
+                map.get("root").add(s);
+                continue;
+            }
+            String k = s.substring(0, s.length() - 2);
+            List<String> v = map.getOrDefault(k, new ArrayList<>());
+            v.add(s);
+            
+            map.put(k, v);
+        }
+        
+        return map;
+    }
+    
+    public TreeNode<String> constructTreeNode(){
+       
+        CheckboxTreeNode<String> root = new CheckboxTreeNode<>();
+        List<Product> prods = constructProducts(mapArr(), "root");
+        constructTreeNode(prods, root);
+        
+        return root;
+    }
+    
+    void constructTreeNode(List<Product> l, TreeNode parent) {
+        if (l.size() == 0) {
+                return;
+        }
+        for (Product p : l) {
+            TreeNode<String> c = new CheckboxTreeNode(p.getParent(), parent);
+            constructTreeNode(p.getChildren(), c);
+        }
+
+    }
+
+    public List<Product> constructProducts(Map<String, List<String>> map, String parent){
+        if(map.containsKey(parent)){
+            List<String> parents = map.get(parent);
+            List<Product> result = new ArrayList<>();
+            for (String c : parents) {
+                  Product prod = new Product(c);
+                  prod.setChildren(constructProducts(map, c));
+                  result.add(prod);
+            }
+            return result;
+        }
+        return new ArrayList<>();
+    }
+    
+    public class Product{
+        private String parent;
+        
+        private List<Product> children;
+        
+        Product(String parent){
+            this.parent = parent;
+        }
+       
+       
+        public String getParent(){
+            return this.parent;
+        }
+        
+        public void setParent(String parent){
+            this.parent = parent;
+        }
+        
+        public List<Product> getChildren(){
+            return this.children;
+        }
+        
+        public void setChildren(List<Product> children){
+            this.children = children;
+        }
+        
+    }
+ 
+
     public void setTree(TreeNode<String> tree) {
         this.tree = tree;
     }
